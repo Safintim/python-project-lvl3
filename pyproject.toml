@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "hexlet-code"
+version = "0.1.0"
+description = ""
+authors = ["Safintim <timurtlt96@mail.ru>"]
+
+[tool.poetry.scripts]
+page-loader = "page_loader.scripts.page_loader:main"
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.26.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+pytest-cov = "^2.12.1"
+flake8 = "^3.9.2"
+black = "^21.8b0"
+isort = "^5.9.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
