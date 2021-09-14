@@ -17,7 +17,9 @@ def get_file_name(url, extension='.html'):
     return file_name + extension
 
 
-def download(url, output_dir=CURRENT_DIR):
+def download(url, output_dir=None):
+    if output_dir is None:
+        output_dir = CURRENT_DIR
     file_name = get_file_name(url)
     file_path = os.path.join(output_dir, file_name)
     response = requests.get(url)

@@ -3,6 +3,9 @@ name = "hexlet-code"
 version = "0.1.0"
 description = ""
 authors = ["Safintim <timurtlt96@mail.ru>"]
+packages = [
+    { include = "page_loader" }
+]
 
 [tool.poetry.scripts]
 page-loader = "page_loader.scripts.page_loader:main"
