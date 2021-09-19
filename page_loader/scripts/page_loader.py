@@ -2,6 +2,7 @@ import argparse
 from pathlib import Path
 
 from page_loader import download
+from page_loader import logger
 
 
 def is_exists(filepath):
@@ -11,6 +12,7 @@ def is_exists(filepath):
 
 
 def main():
+    logger.setup()
     parser = argparse.ArgumentParser(description="Page loader")
     parser.add_argument("url")
     parser.add_argument(

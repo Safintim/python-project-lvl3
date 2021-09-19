@@ -6,7 +6,6 @@ from urllib.parse import ParseResult, urlparse, urlunparse
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 
-
 ATTR_BY_TAG = {
     "img": "src",
     "link": "href",
@@ -85,7 +84,9 @@ def is_same_host(source: str, target: str) -> bool:
 
 
 def create_remote_url(parsed_url: ParseResult, path: str) -> str:
-    return urlunparse((parsed_url.scheme, parsed_url.netloc, path, None, None, None))
+    return urlunparse(
+        (parsed_url.scheme, parsed_url.netloc, path, None, None, None)
+    )
 
 
 def create_local_url(
@@ -119,5 +120,8 @@ def get_full_path(parsed_url: ParseResult) -> str:
     return "-".join(not_empty)
 
 
-def get_index_page_file_name(parsed_url: ParseResult, extension: str = ".html") -> str:
+def get_index_page_file_name(
+        parsed_url: ParseResult,
+        extension: str = ".html",
+) -> str:
     return get_full_path(parsed_url) + extension
