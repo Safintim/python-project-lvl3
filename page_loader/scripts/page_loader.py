@@ -13,9 +13,14 @@ def is_exists(filepath):
 def main():
     parser = argparse.ArgumentParser(description="Page loader")
     parser.add_argument("url")
-    parser.add_argument("-o", "--output", type=is_exists, help="Output directory")
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=is_exists,
+        help="Output directory",
+    )
     namespace = parser.parse_args()
-    print(download(namespace.url, namespace.output))
+    download(namespace.url, namespace.output)
 
 
 if __name__ == "__main__":
