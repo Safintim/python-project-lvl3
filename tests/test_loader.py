@@ -66,9 +66,11 @@ def test_page_loader_resource_not_available(
         download(url)
 
 
-def test_page_loader_not_permission_for_write(mocker, all_requests) -> None:
+def test_page_loader_not_permission_for_write(all_requests, mocker) -> None:
     url = RESOURCE_URLS[0]["url"]
     mocker.patch.object(Path, "write_text", side_effect=PermissionError)
+    mocker.patch.object(Path, "write_bytes", side_effect=PermissionError)
+    mocker.patch.object(Path, "mkdir", side_effect=PermissionError)
 
     with pytest.raises(PermissionError):
         download(url)
