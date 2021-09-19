@@ -2,14 +2,6 @@ from pathlib import Path
 from typing import Union
 from urllib.parse import urljoin
 
-import pytest
-
-
-@pytest.fixture
-def all_requests(requests_mock) -> None:
-    for kwargs in RESOURCE_URLS:
-        requests_mock.get(**kwargs)
-
 
 def read(path: Union[Path, str], mode: str = "r") -> str:
     with open(path, mode=mode) as f:
@@ -29,7 +21,9 @@ RESOURCE_CSS = read(BASE_FIXTURE_DIR / BASE_RESOURCE_DIR / RESOURCE_CSS_PATH)
 RESOURCE_IMAGE = read(
     BASE_FIXTURE_DIR / BASE_RESOURCE_DIR / RESOURCE_IMAGE_PATH, mode="rb"
 )
-RESOURCE_SCRIPT = read(BASE_FIXTURE_DIR / BASE_RESOURCE_DIR / RESOURCE_SCRIPT_PATH)
+RESOURCE_SCRIPT = read(
+    BASE_FIXTURE_DIR / BASE_RESOURCE_DIR / RESOURCE_SCRIPT_PATH
+)
 RESOURCE_CANONICAL_HTML = read(
     BASE_FIXTURE_DIR / BASE_RESOURCE_DIR / RESOURCE_CANONICAL_HTML_PATH
 )

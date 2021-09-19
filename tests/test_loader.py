@@ -13,7 +13,6 @@ from tests.plugins import (
     RESOURCE_INDEX_HTML_PATH,
     RESOURCE_PATHS,
     RESOURCE_URLS,
-    all_requests,
     read,
 )
 
@@ -57,7 +56,9 @@ def test_page_loader_index_not_available(requests_mock) -> None:
         download(url)
 
 
-def test_page_loader_resource_not_available(requests_mock, all_requests) -> None:
+def test_page_loader_resource_not_available(
+        requests_mock, all_requests
+) -> None:
     url = RESOURCE_URLS[1]["url"]
     requests_mock.get(url=url, status_code=HTTPStatus.FORBIDDEN)
 

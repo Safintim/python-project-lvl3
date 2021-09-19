@@ -1,5 +1,4 @@
 import os
-from argparse import ArgumentTypeError
 
 import pytest
 
@@ -23,5 +22,3 @@ def test_cli_not_url() -> None:
 def test_cli_not_exists_dir() -> None:
     with pytest.raises(SystemExit):
         create_argument_parser([BASE_URL, "--output", "/shop-mop"])
-
-
