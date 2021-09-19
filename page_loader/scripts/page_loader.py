@@ -22,7 +22,10 @@ def main():
         help="Output directory",
     )
     namespace = parser.parse_args()
-    download(namespace.url, namespace.output)
+    try:
+        download(namespace.url, namespace.output)
+    except Exception as error:
+        pass
 
 
 if __name__ == "__main__":

@@ -6,15 +6,18 @@ from urllib.parse import urlparse
 
 import requests
 from bs4.element import Tag
+from progress.bar import Bar
+
 from page_loader import parser
 
 CURRENT_DIR = os.getcwd()
 
 
-def download_links(links: Iterable, output_dir: Union[Path, str]) -> None:
-
+def download_links(links_: Iterable, output_dir: Union[Path, str]) -> None:
     logging.info("The downloading of resources has started..")
 
+    links = list(links_)
+    bar = Bar('Processing', suffix='%(percent)d%%', max=len(links))
     for remote_link, local_link in links:
         response = requests.get(remote_link)
 
@@ -29,7 +32,8 @@ def download_links(links: Iterable, output_dir: Union[Path, str]) -> None:
                 f"Resource {remote_link} has not been loaded. HTTP-code: {response.status_code}"
             )
             response.raise_for_status()
-
+        bar.next()
+    bar.finish()
     logging.info("All resources downloaded")
 
 
@@ -45,6 +49,7 @@ def download(url: str, output_dir: str = None) -> str:
 
     output_dir = Path(output_dir or CURRENT_DIR)
     if not output_dir.exists():
+        logging.error(f"Directory not found {output_dir}")
         raise FileNotFoundError(output_dir)
 
     response = requests.get(url)
@@ -52,7 +57,7 @@ def download(url: str, output_dir: str = None) -> str:
     if response.ok:
         logging.info(f"Request for {url} fulfilled")
     else:
-        logging.error(f"Failed request for - {url}")
+        logging.error(f"Failed request for - {url}. HTTP-code: {response.status_code}")
         response.raise_for_status()
 
     soup = parser.parse_html(response.text)
