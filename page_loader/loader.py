@@ -1,7 +1,7 @@
 import logging
 import os
 from pathlib import Path
-from typing import Iterable, Tuple, Union
+from typing import Iterable, Union
 from urllib.parse import urlparse
 
 import requests
@@ -17,7 +17,7 @@ def download_links(links_: Iterable, output_dir: Union[Path, str]) -> None:
     logging.info("The downloading of resources has started..")
 
     links = list(links_)
-    bar = Bar('Processing', suffix='%(percent)d%%', max=len(links))
+    bar = Bar("Processing", suffix="%(percent)d%%", max=len(links))
     for remote_link, local_link in links:
         response = requests.get(remote_link)
 
@@ -29,7 +29,8 @@ def download_links(links_: Iterable, output_dir: Union[Path, str]) -> None:
             logging.info(f"Resource has been saved by path: {path}")
         else:
             logging.warning(
-                f"Resource {remote_link} has not been loaded. HTTP-code: {response.status_code}"
+                f"Resource {remote_link} has not been loaded. "
+                f"HTTP-code: {response.status_code}"
             )
             response.raise_for_status()
         bar.next()
@@ -37,7 +38,7 @@ def download_links(links_: Iterable, output_dir: Union[Path, str]) -> None:
     logging.info("All resources downloaded")
 
 
-def change_links(links_by_tag: dict[Tag: Tuple[str, str]]) -> None:
+def change_links(links_by_tag: dict[Tag: tuple[str, str]]) -> None:
     for tag, (_, local_link) in links_by_tag.items():
         if tag.get("src"):
             tag["src"] = local_link
@@ -57,7 +58,8 @@ def download(url: str, output_dir: str = None) -> str:
     if response.ok:
         logging.info(f"Request for {url} fulfilled")
     else:
-        logging.error(f"Failed request for - {url}. HTTP-code: {response.status_code}")
+        logging.error(f"Failed request for - {url}. "
+                      f"HTTP-code: {response.status_code}")
         response.raise_for_status()
 
     soup = parser.parse_html(response.text)

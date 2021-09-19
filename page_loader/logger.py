@@ -1,10 +1,10 @@
 import logging
 
 
-def setup(level='DEBUG'):
+def setup(level="INFO"):
     logging.basicConfig(
         level=logging.getLevelName(level),
-        filename='loader.log',
-        format='%(asctime)s %(levelname)-8s %(filename)s => %(message)s',
-        datefmt='%Y-%m-%d %H:%M',
+        filename="page-loader.log",
+        format="%(asctime)s %(levelname)-8s %(filename)s => %(message)s",
+        datefmt="%Y-%m-%d %H:%M",
     )

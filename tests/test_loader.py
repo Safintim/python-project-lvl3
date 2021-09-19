@@ -1,7 +1,9 @@
+from http import HTTPStatus
 from pathlib import Path
 
 import page_loader
 import pytest
+import requests
 from page_loader import download
 from tests.plugins import (
     BASE_RESOURCE_DIR,
@@ -10,8 +12,9 @@ from tests.plugins import (
     RESOURCE_INDEX_HTML,
     RESOURCE_INDEX_HTML_PATH,
     RESOURCE_PATHS,
+    RESOURCE_URLS,
+    all_requests,
     read,
-    all_requests
 )
 
 
@@ -44,3 +47,27 @@ def test_page_loader_not_exists_dir(tmp_path, all_requests) -> None:
 
     with pytest.raises(FileNotFoundError):
         download(BASE_URL, str(path))
+
+
+def test_page_loader_index_not_available(requests_mock) -> None:
+    url = RESOURCE_URLS[0]["url"]
+    requests_mock.get(url=url, status_code=HTTPStatus.NOT_FOUND)
+
+    with pytest.raises(requests.HTTPError):
+        download(url)
+
+
+def test_page_loader_resource_not_available(requests_mock, all_requests) -> None:
+    url = RESOURCE_URLS[1]["url"]
+    requests_mock.get(url=url, status_code=HTTPStatus.FORBIDDEN)
+
+    with pytest.raises(requests.HTTPError):
+        download(url)
+
+
+def test_page_loader_not_permission_for_write(mocker, all_requests) -> None:
+    url = RESOURCE_URLS[0]["url"]
+    mocker.patch.object(Path, "write_text", side_effect=PermissionError)
+
+    with pytest.raises(PermissionError):
+        download(url)

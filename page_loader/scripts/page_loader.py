@@ -1,31 +1,20 @@
-import argparse
-from pathlib import Path
+import logging
+import sys
 
-from page_loader import download
-from page_loader import logger
-
-
-def is_exists(filepath):
-    if Path(filepath).exists():
-        return filepath
-    raise argparse.ArgumentTypeError
+from page_loader import download, logger
+from page_loader.cli import create_argument_parser
 
 
 def main():
     logger.setup()
-    parser = argparse.ArgumentParser(description="Page loader")
-    parser.add_argument("url")
-    parser.add_argument(
-        "-o",
-        "--output",
-        type=is_exists,
-        help="Output directory",
-    )
-    namespace = parser.parse_args()
+    arguments = create_argument_parser()
     try:
-        download(namespace.url, namespace.output)
+        path = download(arguments.url, arguments.output)
+        sys.stdout.write(path)
     except Exception as error:
-        pass
+        logging.error(f"Error {error}")
+        sys.stderr.write(f"Error {error}!")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,5 @@
 import os
 from collections import ChainMap
-from typing import Tuple
 from urllib.parse import ParseResult, urlparse, urlunparse
 
 from bs4 import BeautifulSoup
@@ -18,17 +17,16 @@ def parse_html(html: str, default: str = "html.parser") -> BeautifulSoup:
 
 
 def get_links_by_tag(
-        soup: BeautifulSoup,
-        parsed_url: ParseResult,
-) -> dict[Tag: Tuple[str, str]]:
+    soup: BeautifulSoup,
+    parsed_url: ParseResult,
+) -> dict[Tag:tuple[str, str]]:
     parsed_links = parse_links_from_soup(soup)
     link_paths = get_path_links_same_host(parsed_url.hostname, parsed_links)
     return create_downloads_links(parsed_url, link_paths)
 
 
 def parse_links_from_soup(
-        soup: BeautifulSoup,
-        tags: dict[str:str] = None
+    soup: BeautifulSoup, tags: dict[str:str] = None
 ) -> dict[Tag:ParseResult]:
     attr_by_tag = tags or ATTR_BY_TAG
     links_for_all_tag = [
@@ -39,9 +37,9 @@ def parse_links_from_soup(
 
 
 def get_path_links_same_host(
-        hostname: str,
-        parsed_links: dict[Tag:ParseResult],
-) -> dict[Tag: ParseResult]:
+    hostname: str,
+    parsed_links: dict[Tag:ParseResult],
+) -> dict[Tag:ParseResult]:
     return {
         tag: link.path
         for tag, link in parsed_links.items()
@@ -50,9 +48,9 @@ def get_path_links_same_host(
 
 
 def find_links_by_tag(
-        soup: BeautifulSoup,
-        tag: str,
-        attr: str,
+    soup: BeautifulSoup,
+    tag: str,
+    attr: str,
 ) -> dict[Tag:str]:
     return {
         element: element.get(attr)
@@ -63,9 +61,9 @@ def find_links_by_tag(
 
 def create_downloads_links(
     parsed_url: ParseResult,
-    link_paths: dict[Tag: ParseResult],
+    link_paths: dict[Tag:ParseResult],
     local_dir_suffix: str = "_files",
-) -> dict[Tag: Tuple[str, str]]:
+) -> dict[Tag:tuple[str, str]]:
 
     local_hostname = get_local_hostname(parsed_url.hostname)
     local_dir = get_full_path(parsed_url) + local_dir_suffix
@@ -90,10 +88,10 @@ def create_remote_url(parsed_url: ParseResult, path: str) -> str:
 
 
 def create_local_url(
-        local_dir: str,
-        local_hostname: str,
-        path: str,
-        ext: str = ".html",
+    local_dir: str,
+    local_hostname: str,
+    path: str,
+    ext: str = ".html",
 ) -> str:
     path, extension = os.path.splitext(path)
     extension = extension if extension else ext
@@ -121,7 +119,7 @@ def get_full_path(parsed_url: ParseResult) -> str:
 
 
 def get_index_page_file_name(
-        parsed_url: ParseResult,
-        extension: str = ".html",
+    parsed_url: ParseResult,
+    extension: str = ".html",
 ) -> str:
     return get_full_path(parsed_url) + extension
